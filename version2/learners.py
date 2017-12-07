@@ -3,6 +3,9 @@ from collections import Counter
 import numpy as np
 from sklearn.svm import SVC
 from sklearn.metrics import classification_report
+from sklearn import tree
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
 
 
 class Learners(object):
@@ -115,10 +118,54 @@ class SK_SVM(Learners):
 
     def get_param(self):
         tunelst = {"kernel": ["linear", "poly", "rbf", "sigmoid"],
-                    "C": [1, 50],
+                    "C": [1, 100], #np.logspace(-9, 9, num=10, base=10),
                     "coef0": [0.0, 1],
-                    "gamma": [0.0, 1],
+                    #"gamma": [0.0, 1],
                     "random_state": [1, 1]}
+        return tunelst
+
+
+class SK_RF(Learners):
+    def __init__(self, train_x, train_y, predict_x, predict_y, goal):
+        clf = RandomForestClassifier()
+        super(SK_RF, self).__init__(clf, train_x, train_y, predict_x, predict_y,
+                                                                 goal)
+
+    def get_param(self):
+        tunelst = {"max_features": [1, 100],
+                    "max_leaf_nodes": [2, 51],
+                    "min_samples_split": [2, 21],
+                    "min_samples_leaf": [2, 21],
+                    "n_estimators": [50, 151],
+                    "random_state": [42, 42]}
+        return tunelst
+
+
+class SK_CART(Learners):
+    def __init__(self, train_x, train_y, predict_x, predict_y, goal):
+        clf = tree.DecisionTreeClassifier()
+        super(SK_CART, self).__init__(clf, train_x, train_y, predict_x, predict_y,
+                                                                 goal)
+
+    def get_param(self):
+        tunelst = {"max_features": [0.1, 1.0],
+                    "max_depth": [1, 51],
+                    "min_samples_split": [2, 21],
+                    "min_samples_leaf": [1, 21],
+                    "random_state": [79, 79]}
+        return tunelst
+
+
+class SK_KNN(Learners):
+    def __init__(self, train_x, train_y, predict_x, predict_y, goal):
+        clf = KNeighborsClassifier()
+        super(SK_KNN, self).__init__(clf, train_x, train_y, predict_x, predict_y,
+                                                                 goal)
+
+    def get_param(self):
+        tunelst = {"n_neighbors": [2, 10],
+                   "weights": ["uniform", "distance"],
+                   "random_state": [49, 49]}
         return tunelst
 
 
