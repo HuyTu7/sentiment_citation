@@ -92,17 +92,6 @@ def sort_config(tuned_params, goal):
     return sort_params
 
 
-def klass_bal_stats(y_train):
-    count = [0, 0, 0]
-    for i in y_train:
-        if i == "Obama":
-            count[0] += 1
-        elif i == "Romney":
-            count[1] += 1
-    count[2] = count[0] + count[1]
-    mean = int(count[2]/2)
-    return mean - count[0]
-
 
 if __name__ == "__main__":
     tuned_params = run_tuning_SVM()
