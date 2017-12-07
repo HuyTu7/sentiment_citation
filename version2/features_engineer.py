@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import math
+import pickle
 
 from random import randint, random, seed
 from sklearn.decomposition import PCA
@@ -40,7 +41,7 @@ class NUM:
             self.sd = (self.m2 / (self.n - 1)) ** 0.5
 
 
-def load_data(fpath, col_names, test):
+def load_data(fpath, test, col_names=[]):
     """
     Loading Data
 
@@ -49,16 +50,30 @@ def load_data(fpath, col_names, test):
     :param test: boolean, test or train data
     :return:
     """
-    df = pd.read_csv(fpath, header=None, skiprows=1, index_col=False)
+    df = pd.read_csv(fpath, header=None, sep=',')
     df = df.dropna()
-    df.columns = col_names
+    if col_names:
+        df.columns = col_names
     if not test:
-        X = df.drop('winner', axis=1)
-        y = ['Obama' if w == "Barack Obama" else 'Romney' for w in df['winner'].values]
+        y = df.iloc[:, 0]
+        X = df.drop(df.columns[[0]], axis=1)
         klass_dist(y)
         return X, y
     else:
         return df
+
+
+def pickle_operating(fname, item, flag):
+    # save or load the pickle file.
+    file_name = '%s.pickle' % fname
+    print(file_name)
+    if flag == 1:
+        with open(file_name, 'rb') as fs:
+            item = pickle.load(fs)
+            return item
+    else:
+        with open(file_name, 'wb') as fs:
+            pickle.dump(item, fs, protocol=pickle.HIGHEST_PROTOCOL)
 
 
 def klass_dist(labels):
@@ -125,7 +140,7 @@ class SMOTE():
     def execute(self, l, samples=[], labels=[]):
         np.random.seed(7)
         seed(7)
-        return self.balance(samples, labels, m=int(l[0]), r=int(l[1]), neighbors=int(l[2]))
+        return self.balance(samples, labels, r=int(l[0]), neighbors=int(l[1]))
 
     def smote(self, data, num, k=3, r=1):
         corpus = []
@@ -145,24 +160,41 @@ class SMOTE():
         corpus = np.vstack((corpus, np.array(data)))
         return corpus
 
-    def balance(self, data_train, train_label, m=0, r=0, neighbors=0):
+    def balance(self, data_train, train_label, r=0, neighbors=0):
+        """
+
+        :param data_train:
+        :param train_label:
+        :param m:
+        :param r:
+        :param neighbors:
+        :return:
+        """
         pos_train = []
         neg_train = []
+        obj_train = []
         for j, i in enumerate(train_label):
-            if i == "Obama":
+            if i == "o":
+                obj_train.append(data_train[j])
+            elif i == "p":
                 pos_train.append(data_train[j])
             else:
                 neg_train.append(data_train[j])
         pos_train = np.array(pos_train)
         neg_train = np.array(neg_train)
-
-        if len(pos_train) < len(neg_train):
-            pos_train = self.smote(pos_train, m, k=neighbors, r=r)
-            if len(neg_train) < m:
-                m = len(neg_train)
-            neg_train = neg_train[np.random.choice(len(neg_train), m, replace=False)]
-        data_train1 = np.vstack((pos_train, neg_train))
-        label_train = ["Obama"] * len(pos_train) + ["Romney"] * len(neg_train)
-        return data_train1, label_train
+        obj_train = np.array(obj_train)
+        data = [pos_train, obj_train, neg_train]
+        mean_len = int(math.ceil((len(pos_train) + len(neg_train) + len(obj_train)) / 3))
+        print("Mean Length: ", mean_len)
+        for i in range(len(data)):
+            if len(data[i]) < mean_len:
+                m = mean_len - len(data[i])
+                data[i] = self.smote(data[i], m, k=neighbors, r=r)
+            else:
+                m = mean_len
+                data[i] = data[i][np.random.choice(len(data[i]), m, replace=False)]
+        data_train_smoted = np.vstack((data[0], data[1], data[2]))
+        label_train_smoted = ["p"] * len(data[0]) + ["o"] * len(data[1]) + ["n"] * len(data[2])
+        return data_train_smoted, label_train_smoted
 
 
