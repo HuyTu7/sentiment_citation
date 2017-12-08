@@ -20,13 +20,13 @@ Full corpus available at [here](http://www.cl.cam.ac.uk/~aa496/citation-sentimen
 ## Implementation:
 
 #### Model:
+![](/imgs/model.png)
 
-
-#### Feartures Reduction:
-
+#### Feartures Reduction - PCA:
+![](/imgs/1-1.png)
 
 #### SMOTE:
-
+![](/imgs/smote.png)
 
 #### Params to be Optimized per Learner:
 
@@ -37,7 +37,7 @@ Full corpus available at [here](http://www.cl.cam.ac.uk/~aa496/citation-sentimen
 
 #### Results: 
 
-
+![](/imgs/f1_micro.png)
 
 ## Files:
 ```
