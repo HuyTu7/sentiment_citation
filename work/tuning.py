@@ -39,7 +39,21 @@ def print_results(clfs):
         f.write(content)
 
 
-def run_tuning(train_data, train_labels, learn_goal, repeats=3, fold=5, tuning=True):
+def learner_to_tune(model):
+    if model == 'svm':
+        clf = SK_SVM
+    elif model == 'rf':
+        clf = SK_RF
+    elif model == 'knn':
+        clf = SK_KNN
+    elif model == 'cart':
+        clf = SK_CART
+    else:
+        raise NameError('Unknown machine learning model. Please us one of: rf, svm, nb')
+    return clf
+
+
+def run_tuning(train_data, train_labels, learn_goal, model='svm', repeats=3, fold=5, tuning=True):
     """
     :param train_data: np_array, training data
     :param train_labels: np_array, training labels
@@ -47,6 +61,7 @@ def run_tuning(train_data, train_labels, learn_goal, repeats=3, fold=5, tuning=T
     :param repeats: int, number of repeats
     :param fold: int,number of folds
     :param tuning: boolean, tuning or not.
+    :param model: string, the model to be tuned.
     :return: tuned_params: list of tuples(0: params, 1: score)
     """
     random.seed(7)
@@ -54,7 +69,8 @@ def run_tuning(train_data, train_labels, learn_goal, repeats=3, fold=5, tuning=T
     size = int(len(train_labels) * split)
     X_train, X_valid, y_train, y_valid = train_test_split(train_data, train_labels, test_size=size, random_state=5)
     balance_klass = SMOTE()
-    learner = [SK_CART][0]
+    learner_tt = learner_to_tune(model)
+    learner = [learner_tt][0]
     eval_measurements = ["PD", "PF", "PREC", "ACC", "F", "G", "Macro_F", "Micro_F"]
     if learn_goal in eval_measurements:
         goal = learn_goal
@@ -69,13 +85,13 @@ def run_tuning(train_data, train_labels, learn_goal, repeats=3, fold=5, tuning=T
         for train_index, tune_index in kf.split(X_train, y_train):
             train_X = X_train[train_index]
             train_Y = y_train[train_index]
-            print("SMOTING")
+            #print("SMOTING")
             train_X, train_Y = balance_klass.execute(l, samples=train_X, labels=train_Y)
             tune_X = X_train[tune_index]
             tune_Y = y_train[tune_index]
             test_X = X_valid
             test_Y = y_valid
-            print("TUNING")
+            #print("TUNING")
             params, score, evaluation = tune_learner(learner, train_X, train_Y, tune_X,
                                             tune_Y, goal) if tuning else ({}, 0)
             clf = learner(train_X, train_Y, test_X, test_Y, goal)
