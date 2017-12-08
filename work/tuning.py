@@ -98,6 +98,7 @@ def run_tuning(train_data, train_labels, learn_goal, model='svm', repeats=3, fol
             F = clf.learn(F, **params)
             clfs.append(clf)
             tuned_params.append((params, score))
+        print()
     return sort_config(tuned_params, learn_goal)
 
 
