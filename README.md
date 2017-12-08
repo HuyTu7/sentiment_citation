@@ -23,10 +23,10 @@ Full corpus available at [here](http://www.cl.cam.ac.uk/~aa496/citation-sentimen
 ![](/imgs/model.png)
 
 #### Feartures Reduction - PCA:
-<img src="./imgs/1-1.png" width="60%">
+<img src="./imgs/1-1.png" width="80%">
 
 #### SMOTE:
-<img src="./imgs/smote.png" width="60%" height="60%"/>
+<img src="./imgs/smote.png" width="80%" height="60%"/>
 
 #### Params to be Optimized per Learner:
 
