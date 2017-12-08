@@ -1,9 +1,9 @@
 # Citation Sentiment Classifier
 
-### Description:
+## Description:
 
 
-### Dataset:
+## Dataset:
 
 Data for citation sentiment classification reported in the [Sentiment Analysis of Citations using Sentence Structure-Based Features](http://www.aclweb.org/anthology/P11-3015) paper. <br>
 The file test.arff contains only the test set with dependency triplets generated with Stanford CoreNLP. <br> 
@@ -17,29 +17,29 @@ Full corpus available at [here](http://www.cl.cam.ac.uk/~aa496/citation-sentimen
   - Negative [‘n’] - 243 (3.35%)
 
 
-### Implementation:
+## Implementation:
 
-##### Model:
-
-
-##### Feartures Reduction:
+#### Model:
 
 
-##### SMOTE:
+#### Feartures Reduction:
 
 
-##### Params to be Optimized per Learner:
+#### SMOTE:
+
+
+#### Params to be Optimized per Learner:
 
 - RF: max_features, max_leaf_nodes, min_samples_split, & n_estimators
 - SVM: kernels, coef0, & C
 - CART: max_features, max_depth, min_samples_split, & n_estimators
 - KNN: n_neighbors & weights
 
-##### Results: 
+#### Results: 
 
 
 
-### Files:
+## Files:
 ```
 face-rating/
 ├── document/
@@ -58,7 +58,7 @@ face-rating/
 |   ├── tuning.py
 ```
 
-### Requirements:
+## Requirements:
 
 - Python 2.7
 - scikit-learn
