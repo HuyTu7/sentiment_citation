@@ -185,7 +185,7 @@ class SMOTE():
         obj_train = np.array(obj_train)
         data = [pos_train, obj_train, neg_train]
         mean_len = int(math.ceil((len(pos_train) + len(neg_train) + len(obj_train)) / 3))
-        print("Mean Length: ", mean_len)
+        #print("Mean Length: ", mean_len)
         for i in range(len(data)):
             if len(data[i]) < mean_len:
                 m = mean_len - len(data[i])
