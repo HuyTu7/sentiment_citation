@@ -1,10 +1,12 @@
 from __future__ import division, print_function
 import random
 import time
+import sys
+sys.path.append('../preprocess/')
 from features_engineer import SMOTE
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import train_test_split
-from learners import SK_SVM, SK_RF
+from learners import SK_SVM, SK_RF, SK_CART, SK_KNN
 from de_tuner import DE_Tune_ML
 
 
@@ -37,7 +39,7 @@ def print_results(clfs):
         f.write(content)
 
 
-def run_tuning_SVM(train_data, train_labels, learn_goal, repeats=1, fold=2, tuning=True):
+def run_tuning(train_data, train_labels, learn_goal, repeats=3, fold=5, tuning=True):
     """
     :param train_data: np_array, training data
     :param train_labels: np_array, training labels
@@ -52,7 +54,7 @@ def run_tuning_SVM(train_data, train_labels, learn_goal, repeats=1, fold=2, tuni
     size = int(len(train_labels) * split)
     X_train, X_valid, y_train, y_valid = train_test_split(train_data, train_labels, test_size=size, random_state=5)
     balance_klass = SMOTE()
-    learner = [SK_RF][0]
+    learner = [SK_CART][0]
     eval_measurements = ["PD", "PF", "PREC", "ACC", "F", "G", "Macro_F", "Micro_F"]
     if learn_goal in eval_measurements:
         goal = learn_goal
@@ -94,4 +96,4 @@ def sort_config(tuned_params, goal):
 
 
 if __name__ == "__main__":
-    tuned_params = run_tuning_SVM()
+    tuned_params = run_tuning()

@@ -121,7 +121,7 @@ class SK_SVM(Learners):
                     "C": [1, 100], #np.logspace(-9, 9, num=10, base=10),
                     "coef0": [0.0, 1],
                     #"gamma": [0.0, 1],
-                    "random_state": [1, 1]}
+                    "random_state": [42, 42]}
         return tunelst
 
 
@@ -148,7 +148,7 @@ class SK_CART(Learners):
                                                                  goal)
 
     def get_param(self):
-        tunelst = {"max_features": [0.1, 1.0],
+        tunelst = {"max_features": [1, 100],
                     "max_depth": [1, 51],
                     "min_samples_split": [2, 21],
                     "min_samples_leaf": [1, 21],
