@@ -51,7 +51,7 @@ Full corpus available at [here](http://www.cl.cam.ac.uk/~aa496/citation-sentimen
 
 ## Files:
 ```
-face-rating/
+sentiment_citation/
 ├── document/
 │   ├── proposal.pdf
 │   ├── final.pdf
