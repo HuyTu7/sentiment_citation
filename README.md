@@ -2,6 +2,8 @@
 
 ## Description: 
 
+Detailed Report can be accessed [HERE](https://github.com/HuyTu7/sentiment_citation/blob/master/reports/Repeatability_SelfTuning_SA_Citations.pdf)!
+
 Sentiment analysis of scientific citations have been well-studied recently for bibliometrics (the measures of popularity and the impact of the published research). Most research work on this topic have only attempted to use complex, slow, and thorough off-the-shelf models for their problems. 
 
 Proposed Hypothesis: Dimensionality Reduction with performing Undersampling and Oversampling technique and Tuning will get comparable results. 
